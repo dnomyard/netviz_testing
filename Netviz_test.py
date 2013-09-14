@@ -18,6 +18,22 @@ class Netviz_test(tk.Frame):
             self.x = x
             self.y = y
         
+    class Switch():
+        """
+        Switch class defines location of switches in Netviz environment
+        """
+        def __init__(self, x, y):
+            self.x = x
+            self.y = y
+
+    class Computer():
+        """
+        Computer class defines location of workstations in Netviz environment
+        """
+        def __init__(self, x, y):
+            self.x = x
+            self.y = y
+
         
     def __init__(self, max_x, max_y, master=None):
         """
@@ -31,8 +47,19 @@ class Netviz_test(tk.Frame):
 
         self.flag = True
 
+        self.s1 = self.Switch(200, self.max_y/4)
+        self.c1 = self.Computer(200, (3*(self.max_y/4)))
+
+        s1 = self.s1
+        c1 = self.c1
+
+        s1_img = self.canvas.create_bitmap(s1.x, s1.y, bitmap="@./switch.xbm", tag='s1')
+
+        c1_img = self.canvas.create_bitmap(c1.x, c1.y, bitmap="@./computer.xbm", tag='c1')
+
+
         self.master.title('NetViz')
-        self.addStations()
+        # self.addStations()
 		
     def createWidgets(self):
         """ Create canvas and buttons on tk frame. """
@@ -73,5 +100,5 @@ if __name__ == "__main__":
     The MarruSim class should be imported and used from an external Python
     program.  If MaruuSim is executed independently, we simply run randomTest.
     """
-    app = Netviz_test(800, 600)
+    app = Netviz_test(600, 600)
     app.mainloop()
