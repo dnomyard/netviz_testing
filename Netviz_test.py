@@ -3,20 +3,13 @@ import Tkinter as tk
 import numpy
 from random import randint
 import sys, os
+from scapy.all import *
+
 
 class Netviz_test(tk.Frame):
     """
     MarruSim class extends tk.Frame for GUI
     """
-    
-    class Station():
-        """
-        Station class is used to define end stations in maaru simulation.
-        """
-        def __init__(self, x, y):
-            """ Constructor sets initial x,y location for end stations. """
-            self.x = x
-            self.y = y
         
     class Switch():
         """
@@ -29,6 +22,14 @@ class Netviz_test(tk.Frame):
     class Computer():
         """
         Computer class defines location of workstations in Netviz environment
+        """
+        def __init__(self, x, y):
+            self.x = x
+            self.y = y
+
+    class Tap():
+        """
+        Tap changes color if filter criteria is met
         """
         def __init__(self, x, y):
             self.x = x
@@ -49,14 +50,19 @@ class Netviz_test(tk.Frame):
 
         self.s1 = self.Switch(200, self.max_y/4)
         self.c1 = self.Computer(200, (3*(self.max_y/4)))
+        self.t1 = self.Tap(200, self.max_y/2)
+
+        edge = 10
 
         s1 = self.s1
         c1 = self.c1
+        t1 = self.t1
 
         s1_img = self.canvas.create_bitmap(s1.x, s1.y, bitmap="@./switch.xbm", tag='s1')
 
         c1_img = self.canvas.create_bitmap(c1.x, c1.y, bitmap="@./computer.xbm", tag='c1')
 
+        t1 = self.canvas.create_rectangle((t1.x-edge), (t1.y-edge), (t1.x + edge), (t1.y + edge), fill="red", tag='tap1')
 
         self.master.title('NetViz')
         # self.addStations()
@@ -69,7 +75,17 @@ class Netviz_test(tk.Frame):
         # quit button not working - TODO
         # self.quitButton = tk.Button(self, text='Quit', command=self.quit)
         # self.quitButton.grid()
-        
+        self.filterEntry = tk.Entry(self)
+        self.filterEntry.grid()
+        self.filterEntry.insert(0, "Enter filter")
+
+        def callback():
+            print self.filterEntry.get()
+
+        self.filterButton = tk.Button(self, text="Filter", width=10, command=callback)
+        self.filterButton.grid()
+
+
     def quit(self):
         """ Flag boolean is used to stop simulation. """
         self.flag = False
