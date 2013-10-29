@@ -38,7 +38,7 @@ class Netviz_test(tk.Frame):
         
     def __init__(self, max_x, max_y, master=None):
         """
-        Initilize simulation GUI using tk
+        Initilize NetViz GUI using tk
         """
         tk.Frame.__init__(self, master)
         self.max_x = max_x
@@ -85,11 +85,35 @@ class Netviz_test(tk.Frame):
         self.filterButton = tk.Button(self, text="Filter", width=10, command=callback)
         self.filterButton.grid()
 
+        self.textWindow = tk.Text(self)
+        self.textWindow.grid()
+
 
     def quit(self):
         """ Flag boolean is used to stop simulation. """
         self.flag = False
         tk.Frame.quit(self)
+
+
+    def testTTL(pkt):
+        try:
+            if pkt.haslayer(IP):
+                ipsrc=pkt.getlayer(IP).src
+                ttl = str(pkt.ttl)
+                self.textWindow.insert(END, ttl)
+
+        except:
+            pass
+
+
+    def getPackets(self):
+        """ display packets to textWindow """
+
+        numPkts = 0
+
+        sniff(prn=testTTL, store=0)
+
+            
 
         
     def addStations(self):
@@ -118,3 +142,5 @@ if __name__ == "__main__":
     """
     app = Netviz_test(600, 600)
     app.mainloop()
+
+    app.getPackets()
