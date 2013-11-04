@@ -144,7 +144,12 @@ class ThreadedClient:
         One important thing to remember is that the thread has to yield
         control.
         """
-        sniff(prn=self.testTTL, store=0)
+        try:
+            sniff(prn=self.testTTL, store=0)
+
+        except KeyboardInterrupt:
+            exit(0)
+
 
         # while self.running:
             # To simulate asynchronous I/O, we create a random number at
