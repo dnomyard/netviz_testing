@@ -136,6 +136,13 @@ class ThreadedClient:
         except:
             pass
 
+    def stopperCheck():
+        if self.running:
+            return False
+        
+        return True
+
+
 
     def workerThread1(self):
         """
@@ -145,7 +152,7 @@ class ThreadedClient:
         control.
         """
         try:
-            sniff(prn=self.testTTL, store=0)
+            sniff(prn=self.testTTL, store=0, stopperTimeout=1, stopper=self.stopperCheck)
 
         except KeyboardInterrupt:
             exit(0)
