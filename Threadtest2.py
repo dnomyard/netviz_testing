@@ -31,6 +31,7 @@ from scapy.all import *
 
 class GuiPart(QtGui.QWidget):
 
+
     def __init__(self, queue, endcommand, *args):
 
         super(GuiPart, self).__init__()
@@ -42,7 +43,7 @@ class GuiPart(QtGui.QWidget):
         filterEdit=QtGui.QLineEdit()
 
         quitButton = QtGui.QPushButton('Quit', self)
-        quitButton.clicked.connect(qt.QCoreApplication.instance().quit)
+        quitButton.clicked.connect(self.quitApp)
 
         self.editor = QtGui.QTextEdit(self)
 
@@ -62,6 +63,10 @@ class GuiPart(QtGui.QWidget):
         # self.setCentralWidget(self.editor)
         self.endcommand = endcommand
 
+
+    def quitApp(self):
+        self.endcommand()
+        qt.QCoreApplication.instance().quit
 
 
     def closeEvent(self, ev):
@@ -123,6 +128,7 @@ class ThreadedClient:
             root.quit()
 
     def endApplication(self):
+        print 'ENDING'
         self.running = 0
 
     def testTTL(self, pkt):
@@ -136,7 +142,8 @@ class ThreadedClient:
         except:
             pass
 
-    def stopperCheck():
+    def stopperCheck(self):
+        print self.running
         if self.running:
             return False
         
